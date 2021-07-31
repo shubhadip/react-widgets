@@ -1,1 +1,0 @@
-(self.webpackChunkreact_widgets=self.webpackChunkreact_widgets||[]).push([[692],{378:(e,t,n)=>{"use strict";n.r(t),n.d(t,{default:()=>r});var c=n(294);const r=function(){return c.createElement("div",null,c.createElement("input",{type:"text"}))}}}]);

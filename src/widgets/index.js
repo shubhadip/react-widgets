@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import './../assets/css/app-main.css';
 
 const requireContextWidgets = require.context(
 	'../',

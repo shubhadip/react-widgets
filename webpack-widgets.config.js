@@ -3,6 +3,8 @@ const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { StatsWriterPlugin } = require("webpack-stats-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
 
 const OUTPUT_PATH = path.join(__dirname, 'widgets-build');
 const PUBLIC_PATH = '/' //(process.env.STATIC_URL || '/static/') + 'js/build/';
@@ -70,13 +72,28 @@ const config = {
   plugins:[
     new CleanWebpackPlugin(),
     new StatsWriterPlugin({
-      filename: "stats.json" // Default
+      stats: {
+        all: false,
+        assets: true
+      }
+    }),
+    new htmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src/widget.html'),
+      filename: 'index.html',
+      async: ['common'],
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css' ,
+      chunkFilename: '[id].css',
+    }),
+    new CompressionPlugin({
+      test: /\.js(\?.*)?$/i,
     })
   ],
   mode: "production",
   output: {
     path: OUTPUT_PATH,
-    filename: '[name].[hash].bundle.js',
+    filename: '[name].[fullhash].bundle.js',
     publicPath: PUBLIC_PATH,
   },
   watch: false,

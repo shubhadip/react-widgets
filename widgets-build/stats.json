@@ -1,13 +1,23 @@
 {
   "assetsByChunkName": {
     "common": [
-      "common.db02c8ffeb910db1cfe9.bundle.js"
+      "common.css",
+      "common.196b88d6ef48c0b325ba.bundle.js"
     ],
     "test-one": [
-      "test-one.db02c8ffeb910db1cfe9.bundle.js"
+      "692.css",
+      "test-one.196b88d6ef48c0b325ba.bundle.js"
     ],
     "test-two": [
-      "test-two.db02c8ffeb910db1cfe9.bundle.js"
+      "test-two.196b88d6ef48c0b325ba.bundle.js"
     ]
-  }
+  },
+  "assets": [
+    {
+      "type": "assets by status",
+      "cached": true,
+      "filteredChildren": 6,
+      "size": 140689
+    }
+  ]
 }
