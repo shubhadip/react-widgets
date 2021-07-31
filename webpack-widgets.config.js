@@ -1,6 +1,14 @@
+
 const path = require('path')
-const OUTPUT_PATH = path.join(__dirname, 'build');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { StatsWriterPlugin } = require("webpack-stats-plugin")
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const CompressionPlugin = require("compression-webpack-plugin");
+
+const OUTPUT_PATH = path.join(__dirname, 'widgets-build');
 const PUBLIC_PATH = '/' //(process.env.STATIC_URL || '/static/') + 'js/build/';
+
 const DIRECTORY_BUNDLE_MAP = {
   'test-one': 'test-one',
   'test-two': 'test-two',
@@ -31,6 +39,17 @@ const WEBPACK_LOADER_RULES = {
   rules: [
     ...BUNDLE_LOADER_RULES,
     {
+      test: /\.(scss|css)$/i,
+      use: [
+        {
+          loader: MiniCssExtractPlugin.loader,
+        },
+        'css-loader',
+        'postcss-loader',
+        'sass-loader',
+      ],
+    },
+    {
       test: /\.js?$/,
       use: [
         {
@@ -47,13 +66,34 @@ const config = {
     common: [
       'react',
       'react-dom',
-      './src/common/widgets.js',
+      './src/widgets/index.js',
     ]
   },
+  plugins:[
+    new CleanWebpackPlugin(),
+    new StatsWriterPlugin({
+      stats: {
+        all: false,
+        assets: true
+      }
+    }),
+    new htmlWebpackPlugin({
+      template: path.resolve(__dirname, 'src/widget.html'),
+      filename: 'index.html',
+      async: ['common'],
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css' ,
+      chunkFilename: '[id].css',
+    }),
+    new CompressionPlugin({
+      test: /\.js(\?.*)?$/i,
+    })
+  ],
   mode: "production",
   output: {
     path: OUTPUT_PATH,
-    filename: '[name].[hash].bundle.js',
+    filename: '[name].[fullhash].bundle.js',
     publicPath: PUBLIC_PATH,
   },
   watch: false,
@@ -74,8 +114,5 @@ const config = {
     ]
   },
 }
-
-// console.log(JSON.stringify(config));
-console.log(JSON.stringify(config, null, 4));
 
 module.exports = config;

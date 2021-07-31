@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkreact_widgets=self.webpackChunkreact_widgets||[]).push([[897],{74:(e,t,n)=>{n.r(t),n.d(t,{default:()=>s});var c=n(294);const s=function(){return c.createElement("div",null,"i am test two component")}}}]);
