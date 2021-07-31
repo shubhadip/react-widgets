@@ -45,7 +45,14 @@ const WEBPACK_LOADER_RULES = {
           loader: MiniCssExtractPlugin.loader,
         },
         'css-loader',
-        'postcss-loader',
+        {
+          loader: 'postcss-loader',
+          options: {
+            postcssOptions: {
+              config: path.resolve(__dirname, "postcss-widgets.config.js"),
+            },
+          }
+        },
         'sass-loader',
       ],
     },

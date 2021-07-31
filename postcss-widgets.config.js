@@ -1,4 +1,15 @@
 const path = require('path');
+
+const purgecss = {
+  '@fullhuman/postcss-purgecss': {
+    content: ['./src/**/*.js','./src/**/*.html','./src/**/*.widget.js'],
+    defaultExtractor(content) {
+      const contentWithoutStyleBlocks = content.replace(/<style[^]+?<\/style>/gi, '');
+      return contentWithoutStyleBlocks.match(/[A-Za-z0-9-_/:]*[A-Za-z0-9-_/]+/g) || [];
+    }
+  },
+};
+
 module.exports = {
   plugins: {
     'postcss-import': {
@@ -30,6 +41,7 @@ module.exports = {
     autoprefixer: {
       overrideBrowserslist: '> 1%, IE 6, Explorer >= 10, Safari >= 7',
     },
+    ...purgecss,
     'postcss-discard-comments': {},
     cssnano: {
       zindex: false,
