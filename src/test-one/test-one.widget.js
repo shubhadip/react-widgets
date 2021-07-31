@@ -8,8 +8,6 @@ function RegistrationInput(props) {
   const [value, setValue] = useState('')
   const [error, setError] = useState('')
   
-  console.log('props',props);
-  
   const handleProceed = () => {
     const isTwoWheeler = props.productType === 'bike';
     if(MOTOR_REGISTRATION_REGEX.test(value)){
