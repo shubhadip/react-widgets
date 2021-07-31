@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": " webpack",
     "build-widgets": " webpack --config webpack-widgets.config.js",
-    "serve": "webpack serve --config webpack-dev.config.js"
+    "serve": "webpack serve --config webpack-dev.config.js",
+    "demo-widgets": "yarn build-widgets && node widget-serve.js"
   },
   "keywords": [],
   "author": "",

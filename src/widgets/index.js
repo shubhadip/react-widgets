@@ -15,7 +15,7 @@ for (const path of widgetsPathList) {
 	widgetMap[widgetCodeRegex.exec(path)[0]] = requireContextWidgets(path)
 }
 
-function cfLoadWidget(
+function loadWidget(
 	widgetCode,
 	containerId,
 	props = {}
@@ -42,7 +42,5 @@ function cfLoadWidget(
 		throw `Widget code(${widgetCode}) is not valid.`
 	}
 }
-console.log('called')
-window['testWidget'] = () => { console.log('i am called') }
-window['cfLoadWidget'] = cfLoadWidget
+window['loadWidget'] = loadWidget
 export default widgetMap
