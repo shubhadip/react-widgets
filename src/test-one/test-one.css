@@ -1,5 +1,6 @@
 .regnumber {
   width: 500px;
+  margin: 0 auto;
   &_input {
     width: 100%;
     border: 1px solid #e8edf3;

@@ -4,6 +4,62 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+    }
+    .initial-load-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .initial-spinner {
+      display: block;
+      white-space: nowrap;
+    }
+    .initial-spinner > i {
+      display: inline-block;
+      padding: 6px;
+      margin: 0 3px;
+      border-radius: 100%;
+      transform: scale(0);
+      animation: initialscale 1.2s infinite ease-in-out alternate;
+    }
+    .initial-spinner > i:nth-child(1),.initial-spinner > i:nth-child(2),
+    .initial-spinner > i:nth-child(3) {
+      background: #07448e;
+    }
+    .initial-spinner > i:nth-child(1) {
+      animation-delay: 0s;
+    }
+    .initial-spinner > i:nth-child(2) {
+      animation-delay: 0.24s;
+    }
+    .initial-spinner > i:nth-child(3) {
+      animation-delay: 0.48s;
+    }
+    .initial-spinner > i:nth-child(4),.initial-spinner > i:nth-child(5){
+      background: #00b9f5;
+    }
+    .initial-spinner > i:nth-child(4) {
+      animation-delay: 0.72s;
+    }
+    .initial-spinner > i:nth-child(5) {
+      animation-delay: 0.96s;
+    }
+    @keyframes initialscale {
+      0% {
+        transform: scale(0);
+      }
+      50% {
+        transform: scale(1);
+      }
+      100% {
+        transform: scale(0);
+      }
+    }
+  </style>
   <script defer type="text/javascript">
     window.onload = function(){
       setTimeout(() => {
@@ -15,6 +71,12 @@
   </script>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <div class="initial-load-screen">
+      <div class="initial-spinner">
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
