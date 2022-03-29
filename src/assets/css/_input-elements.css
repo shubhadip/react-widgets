@@ -1,0 +1,578 @@
+/* Non floating first approach */
+
+/* Based on material ui borderer & underline types */
+
+/* adornment ui helpers */
+.cInput {
+  &__addonstart,
+  &__addonend {
+    height: 0.01em;
+    display: flex;
+    max-height: 2em;
+    align-items: center;
+    white-space: nowrap;
+    margin-top: -0.1em;
+  }
+
+  &__addonstart {
+    margin-right: 0.5rem;
+  }
+
+  &__addonend {
+    margin-left: 0.5rem;
+  }
+
+  &__addontext {
+    color: $input-placeholder-color;
+  }
+
+  /* error | helper text ui piece common */
+  &__error,
+  &__helper {
+    font-size: $font-size-xs;
+    line-height: $line-height-tighter;
+    margin-top: 12px;
+  }
+
+  &__error {
+    color: $red;
+  }
+
+  &__helper {
+    color: $grey;
+  }
+}
+
+.cInput__btn {
+  cursor: pointer;
+  border-radius: 100%;
+  padding: 0.5rem;
+  border: 0;
+  background-color: transparent;
+  outline: none !important;
+  color: $input-placeholder-color;
+
+  &:hover {
+    background-color: color($black a(5%));
+  }
+}
+
+.cInput__customicon,
+.cInput__icon,
+.cInput__selecticon {
+  fill: currentColor;
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  transition: fill 150ms ease-in-out;
+  user-select: none;
+
+  /* this is supposed to be a flex item */
+  flex-shrink: 0;
+}
+
+.cInput__icon {
+  font-size: 1.25rem;
+}
+
+.cInput__selecticon {
+  margin: 0 0.25em 0 -1.25em;
+  color: $grey-1;
+  pointer-events: none;
+  font-size: 1rem;
+}
+
+.cInput__clear {
+  cursor: pointer;
+  background-image: $icon-circle-close;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  padding: 8px;
+  margin-right: 4px;
+}
+
+/* Common Root element properties */
+.cInput__elem {
+  font: inherit;
+  color: currentColor;
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  background: none;
+  box-sizing: content-box;
+  letter-spacing: inherit;
+  -webkit-tap-highlight-color: transparent;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &::placeholder {
+    color: $input-placeholder-color;
+    transition: opacity 0.15s ease-in-out;
+  }
+
+  &:invalid {
+    box-shadow: none;
+  }
+
+  &::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+
+  /* remove spinner arrows on Firefox */
+  input[type="number"]& {
+    -moz-appearance: textfield;
+  }
+
+  /* remove spinner arrows on Chrome, Safari, Edge, Opera */
+  input&::-webkit-outer-spin-button,
+  input&::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Special treatment for placeholder init non-shrink state */
+  .cInput__label:not(.cInput__label--shrink) + .cInput__base & {
+    &::placeholder {
+      opacity: 0 !important;
+    }
+
+    &:focus::placeholder {
+      opacity: 0.42;
+    }
+  }
+}
+
+/* Common Label & Base element properties */
+.cInput {
+  position: relative;
+  text-align: left;
+
+  &__label ,&__s-placeholder {
+    color: $input-placeholder-color;
+    padding: 0;
+    font-size: $input-font-size;
+    font-weight: $input-font-weight;
+    line-height: 1;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    transform-origin: top left;
+    transition: color 0.15s ease-in-out, transform 0.15s ease-in-out, font-size 0.15s ease-in-out;
+  }
+
+  /* Input State: Size Normal -> initial */
+  &__base {
+    background-color: $input-bg;
+    color: $input-color;
+    cursor: text;
+    font-size: $input-font-size;
+    font-weight: $input-font-weight;
+    line-height: $input-base-height;
+    align-items: center;
+    position: relative;
+
+    /* Has to be inline-flex and width 100% */
+    display: inline-flex;
+    width: 100%;
+  }
+
+  /*
+  Input "base" Size Normal : child could be
+  <textarea> [Multiline], <select>, <input>,
+  <div> [ select menu type looking ]
+  */
+  &__input,
+  &__select,
+  &__multiline {
+    /* Width 100% given as native inputs are inline */
+    width: 100%;
+    height: $input-base-height;
+    display: block;
+  }
+
+  &__select {
+    cursor: pointer;
+    min-width: 16px;
+    user-select: none;
+    border-radius: 0;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+
+  /* div type structure for select dropdown */
+  &__selectmenu {
+    height: auto;
+    overflow: hidden;
+    min-height: $input-base-height;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* When "base" has multiline child */
+  &__multiline {
+    height: auto;
+    resize: none;
+    padding: 0;
+  }
+}
+
+/* Every css override is applied downwards in common selector wise */
+
+/*
+1. Floating UI Underline + Non-Floating UI Underline = Order Sizes [ Normal | Dense | Large ]
+2. Floating UI Bordered + Non-Floating UI Bordered = Order Sizes [ Normal | Dense | Large ]
+*/
+
+/* ------ 1. Floating UI Underline + Non-Floating UI Underline START ------ */
+
+/*  Floating Underline UI */
+.cInput {
+  /* Floating Label State: Size Normal -> initial */
+  &__labelul{
+    transform: translate(0, 24px);
+  }
+  &__splaceholderul{
+    transform: translate(0, 10px);
+  }
+
+  /* Non-Floating Label State: Size Normal -> initial */
+
+  /* &__label--ul-nfl {
+    transform: translate(0, 16px);
+  } */
+
+  /* Floating Label State: Size Dense -> initial */
+
+  /* &__label--ul-sm {
+    transform: translate(0, 21px);
+  } */
+
+  /* Non Floating Label State: Size Dense -> initial */
+
+  /* &__label--ul-sm&__label--ul-nfl {
+    transform: translate(0, 13px);
+  } */
+
+  /* Label State: Size Large -> initial */
+
+  /* -- To be added -- */
+
+  /* Input Elements State: Size Normal -> initial */
+  &__baseul &__input,
+  &__baseul &__select,
+  &__baseul &__basemultiline {
+    padding: 6px 0 7px;
+  }
+
+  &__baseul &__select {
+    padding-right: 24px;
+  }
+
+  /* Floating Input State: Size Normal -> initial */
+  &__baseul {
+    margin-top: 15px;
+  }
+
+  /* Non-Floating Input State: Size Normal -> initial */
+
+  /* &__base--ul-nfl {
+    margin-top: 8px;
+  } */
+
+  /* Input Elements State: Size Dense -> initial */
+
+  /* &__base--ul-sm &__input,
+  &__base--ul-sm &__select,
+  &__base--ul-sm&__base--multiline {
+    padding-top: 3px;
+    padding-bottom: 7px;
+  } */
+
+  /* &__base--ul-sm &__addon-start,
+  &__base--ul-sm &__addon-end {
+    margin-top: -2px;
+  } */
+
+  /* Input State: Size Large -> initial */
+}
+
+/* Underline UI common styling */
+.cInput__baseul {
+  /* Underline Input: Size [ Normal | Dense ] -> initial */
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    transition: transform 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+
+  &:before {
+    border-bottom: 1px solid $input-border-color;
+  }
+
+  &:after {
+    border-bottom: 2px solid $input-focus-border-color;
+    transform: scaleX(0);
+    transform-origin: center center;
+  }
+
+  /* Underline Input: Size [ Normal | Dense ] -> hover */
+  &:hover:before {
+    border-color: $input-hover-border-color;
+  }
+}
+
+/* Underline Input: Size [ Normal | Dense ] -> error from outside and inside */
+.cInputerror .cInput__baseul:not(.is-focused):after,
+.cInput__baseul.is-error:after {
+  border-color: $red;
+  transform: scaleX(1);
+}
+
+.cInput__baseul {
+  /* Underline Input: Size [ Normal | Dense ] -> focus */
+  &.is-focused:after {
+    transform: scaleX(1);
+  }
+
+  /* Underline Input: Size [ Normal | Dense ] -> disabled */
+  &.is-disabled:before {
+    border-bottom: 1px solid $input-border-color;
+  }
+}
+
+/* All Size Common States */
+.cInput {
+  /* Label State: Size [ Normal | Dense | Large ] -> shrink */
+  &__label&__labelshrink {
+    font-size: 0.75rem;
+    font-weight: $font-normal;
+    transform: translate(0, 2.5px);
+  }
+
+  /* This applies to all Floating & Non-floating shrunk labels */
+
+  /* Since there are two themes Underline and Bordered */
+
+  /* &__label--ul-nfl&__label--shrink,
+  &__label--br-nfl&__label--shrink {
+    display: none !important;
+  } */
+
+  /* Input State: Size [ Normal | Dense | Large ] -> disabled */
+  &__base.isdisabled &__elem {
+    opacity: 1;
+  }
+
+  &__base.isdisabled,
+  &__base.isdisabled &__select {
+    cursor: default;
+    color: $input-placeholder-color;
+  }
+}
+
+/* ------ 1. Floating UI Underline + Non-Floating UI Underline END ------ */
+
+/* ------ 2. Floating UI Bordered + Non-Floating UI Bordered START ------ */
+.cInput {
+  /* Bordered Label: Size Normal -> initial */
+  &__labelbr {
+    pointer-events: none;
+    transform: translate($input-spacing-x, 20px);
+  }
+  &__splaceholderbr {
+    pointer-events: none;
+    transform: translate($input-spacing-x, 23px);
+  }
+
+  /* Bordered Label: Size Normal -> shrink */
+  &__labelbr &__labelshrink {
+    transform: translate($input-spacing-x, 10px);
+  }
+
+  /* Bordered Label: Size Dense -> initial */
+
+  /* &__label--br-sm {
+    transform: translate($input-spacing-x, 17px);
+  } */
+
+  /* Non-Floating Border Label Size: Dense */
+
+  /* &__label--br-sm&__label--br-nfl {
+    transform: translate($input-spacing-x, 13px);
+  } */
+
+  /* Bordered Label: Size Dense -> shrink */
+
+  /* &__label--br-sm&__label--shrink {
+    transform: translate($input-spacing-x, 7px);
+  } */
+
+  /* Base > Input styling */
+
+  /* Bordered Input: Applies to Size [ Normal | Dense | Large ] -> initial */
+  &__basebr &__selecticon {
+    position: relative;
+    right: 7px;
+    margin-right: 3px;
+  }
+
+  &__basebr &__customicon {
+    margin-right: 8px;
+  }
+
+  &__basebr&__baseaddonstart {
+    padding-left: $input-spacing-x;
+  }
+
+  &__basebr&__baseaddonend {
+    padding-right: $input-spacing-x;
+  }
+
+  &__basebr&__baseaddonend &__btn {
+    margin-right: -$input-spacing-x;
+  }
+
+  &__basebr&__baseaddonstart &__input {
+    padding-left: 0;
+  }
+
+  &__basebr&__baseaddonend &__input {
+    padding-right: 0;
+  }
+
+  /* Floating Bordered Input: Size Normal -> initial */
+  &__basebr &__input,
+  &__basebr &__select,
+  &__basebr&__base--multiline {
+    padding: 27px $input-spacing-x 10px;
+  }
+
+  &__base--s-base&__basebr &__input,
+  &__base--s-base&__basebr &__select,
+  &__base--s-base&__basebr&__base--multiline {
+    padding: 19px $input-spacing-x 18px;
+  }
+
+  &__base--s-base&__basebr &__addon-start ,
+  &__base--s-base&__basebr &__addon-end {
+    margin-top:3px;
+  }
+
+
+  &__basebr &__select {
+    padding-right: 32px;
+  }
+
+  /* All sizes fit */
+  &__basebr &__addon-start {
+    margin-top: 17px;
+  }
+
+  /* Non-Floating Border Input Size: Normal */
+
+  /* &__base--br-nfl &__input,
+  &__base--br-nfl &__select,
+  &__base--br-nfl&__base--multiline {
+    padding-top: 18.5px;
+    padding-bottom: 18.5px;
+  } */
+
+  /* All sizes fit */
+
+  /* &__base--br-nfl &__addon-start {
+    margin-top: 0;
+  } */
+
+  /* Floating Bordered Input:  Size Dense -> initial */
+
+  /* &__base--br-sm &__input,
+  &__base--br-sm &__select,
+  &__base--br-sm&__base--multiline {
+    padding-top: 23px;
+    padding-bottom: 6px;
+  } */
+
+  /*  Non-Floating Border Input Size: Dense */
+
+  /* &__base--br-sm&__base--br-nfl &__input,
+  &__base--br-sm&__base--br-nfl &__select,
+  &__base--br-sm&__base--br-nfl&__base--multiline {
+    padding-top: 10.5px;
+    padding-bottom: 10.5px;
+  } */
+
+  /* Floating Bordered Input Size Large -> initial */
+
+  /*  Non-Floating Border Input Size: Large */
+}
+
+/* Bordered UI common styling */
+
+/* Bordered Input: Size [ Normal | Dense | Large ] -> initial */
+.cInput__basebr {
+  border-radius: 4px;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    border: 1px solid $input-border-color;
+    border-radius: inherit;
+    transition: $input-transition;
+  }
+
+  /* Bordered Input: Size [ Normal | Dense ] -> hover */
+  &:hover:before {
+    border-color: $input-hover-border-color;
+  }
+}
+
+/* Bordered Input: Size [ Normal | Dense ] -> error from outside and inside */
+.cInputerror .cInput__basebr:not(.is-focused):before,
+.cInput__basebr.is-error:before {
+  border-color: $red;
+  box-shadow: none;
+}
+
+.cInput__basebr {
+  /* Bordered Input: Size [ Normal | Dense ] -> focus */
+  &.is-focused:before {
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+  }
+
+  /* Bordered Input: Size [ Normal | Dense ] -> disabled */
+  &.is-disabled {
+    background-color: $input-disabled-bg;
+
+    &:before {
+      border-color: $input-border-color;
+      box-shadow: none;
+    }
+  }
+}
+
+.cInput__s-label {
+  font-size: 14px;
+}
+.cInput__s-labelbr {
+  margin-bottom: 8px;
+}
+.cInput__s-labelul {
+  margin-bottom: -7px;
+}
+
+/* ------ 2. Floating UI Bordered + Non Floating UI Bordered END ------ */

@@ -5,17 +5,20 @@ const { StatsWriterPlugin } = require("webpack-stats-plugin")
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const htmlWebpackPlugin = require('html-webpack-plugin');
 const CompressionPlugin = require("compression-webpack-plugin");
+const RemoveEmptyScriptsPlugin = require('webpack-remove-empty-scripts');
+
 
 const OUTPUT_PATH = path.join(__dirname, 'widgets-build');
 const PUBLIC_PATH = '/' //(process.env.STATIC_URL || '/static/') + 'js/build/';
 
 const DIRECTORY_BUNDLE_MAP = {
-  'test-one': 'test-one',
-  'test-two': 'test-two',
+  // 'Input': 'Input',
+  'Dropdown': 'Dropdown',
+  // 'test-two':'test-two',
 }
 
 const getComponent = (componentAlias) => {
-  const component = new RegExp(`.*\\/${DIRECTORY_BUNDLE_MAP[componentAlias]}\\/.*\\.widget.js?$`)
+  const component = new RegExp(`.*\\/${DIRECTORY_BUNDLE_MAP[componentAlias]}\\/.*\\.widget.tsx?$`);
   return component;
 }
 
@@ -43,8 +46,10 @@ const WEBPACK_LOADER_RULES = {
       use: [
         {
           loader: MiniCssExtractPlugin.loader,
+          options: {esModule: true}
         },
         'css-loader',
+        'sass-loader',
         {
           loader: 'postcss-loader',
           options: {
@@ -53,18 +58,24 @@ const WEBPACK_LOADER_RULES = {
             },
           }
         },
-        'sass-loader',
       ],
     },
     {
-      test: /\.js?$/,
-      use: [
-        {
-          loader: 'babel-loader',
-        }
-      ],
-      exclude: /node_modules/
+      test: /\.tsx?$/,
+      use: [{
+        loader: 'ts-loader',
+      }],
+      exclude: /node_modules/,
     },
+    // {
+    //   test: /\.js?$/,
+    //   use: [
+    //     {
+    //       loader: 'babel-loader',
+    //     }
+    //   ],
+    //   exclude: /node_modules/
+    // },
   ]
 }
 
@@ -73,7 +84,7 @@ const config = {
     common: [
       'react',
       'react-dom',
-      './src/widgets/index.js',
+      './src/widgets/index.tsx',
     ]
   },
   plugins:[
@@ -89,9 +100,9 @@ const config = {
       filename: 'index.html',
       async: ['common'],
     }),
+    new RemoveEmptyScriptsPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].css' ,
-      chunkFilename: '[id].css',
+      filename: '[name].[chunkhash:8].css',
     }),
     new CompressionPlugin({
       test: /\.js(\?.*)?$/i,
@@ -110,7 +121,16 @@ const config = {
     ignored: /node_modules/,
   },
   optimization: {
-    runtimeChunk: false
+    splitChunks: {
+      cacheGroups: {
+        styles: {
+          type: 'css/mini-extract',
+          chunks: 'all',
+          // If you need this uncomment
+          // enforce: true,
+        },
+      },
+    },
   },
   module: WEBPACK_LOADER_RULES,
   resolve: {
@@ -118,6 +138,9 @@ const config = {
     extensions: [
       '.js',
       '.jsx',
+      '.ts',
+      '.tsx',
+      '.css'
     ]
   },
 }

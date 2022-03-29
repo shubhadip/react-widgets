@@ -16,8 +16,14 @@ const WEBPACK_LOADER_RULES = {
         },
         'css-loader',
         'postcss-loader',
-        'sass-loader',
       ],
+    },
+    {
+      test: /\.tsx?$/,
+      use: [{
+        loader: 'ts-loader',
+      }],
+      exclude: /node_modules/,
     },
     {
       test: /\.js?$/,
@@ -68,6 +74,9 @@ const config = {
     extensions: [
       '.js',
       '.jsx',
+      '.ts',
+      '.tsx',
+      '.css'
     ]
   },
 }

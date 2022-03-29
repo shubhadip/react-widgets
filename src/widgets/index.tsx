@@ -1,32 +1,29 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 import './../assets/css/app-main.css';
 
-const requireContextWidgets = require.context(
+const requireContextWidgets = (require as any).context(
 	'../',
 	true,
-	/\.widget.js?$/
+	/\.widget.tsx?$/
 )
 const widgetsPathList = requireContextWidgets.keys()
 
 const widgetMap = {}
-const widgetCodeRegex = /[a-z-A-Z]+(?=\.widget\.js?$)/
+const widgetCodeRegex = /[a-z-A-Z]+(?=\.widget\.tsx?$)/
 for (const path of widgetsPathList) {
-	widgetMap[widgetCodeRegex.exec(path)[0]] = requireContextWidgets(path)
+	(widgetMap as any)[widgetCodeRegex.exec(path)[0]] = requireContextWidgets(path)
 }
 
-function loadWidget(
-	widgetCode,
-	containerId,
-	props = {}
-) {
-	const widgetLoader = widgetMap[widgetCode]
+function loadWidget(widgetCode: any, containerId : any,props: any = {}) {
+	const widgetLoader = (widgetMap as any)[widgetCode]
 	if (widgetLoader) {
 		const node = document.getElementById(containerId)
 		if (node) {
-			widgetLoader(function (Component) {
+			widgetLoader(function (Component: any) {
 				Component = Component.default || Component
 				console.log('Component', Component)
+				debugger
 				const renderDom = () =>
 					ReactDOM.render(
 						<Component {...props} />,
@@ -42,5 +39,5 @@ function loadWidget(
 		throw `Widget code(${widgetCode}) is not valid.`
 	}
 }
-window['loadWidget'] = loadWidget
+(window as any)['loadWidget'] = loadWidget
 export default widgetMap

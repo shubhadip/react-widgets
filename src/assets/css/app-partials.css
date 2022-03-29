@@ -190,9 +190,9 @@ $btn-transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
   border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
 /* Radio & checkboxes */
-$checkbox-radio-size: rem(18px);
-$checkbox-radio-size-sm: rem(14px);
-$checkbox-radio-gutter: rem(12px);
+$checkbox-radio-size: 18px;
+$checkbox-radio-size-sm: 14px;
+$checkbox-radio-gutter: 12px;
 $checkbox-radio-border-color: #b8c2cb;
 $checkbox-radio-focus-shadow: 0 0 0 1px $white, $input-btn-focus-box-shadow;
 $checkbox-radio-transition: background-color 0.15s ease-in-out,
